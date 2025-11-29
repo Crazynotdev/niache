@@ -10,48 +10,38 @@ require('dotenv').config();
 const app = express();
 
 // Middlewares de sécurité
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net"],
-      styleSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "fonts.googleapis.com"],
-      fontSrc: ["'self'", "fonts.gstatic.com"],
-      connectSrc: ["'self'", "ws:", "wss:"]
-    }
-  }
-}));
-
+app.use(helmet());
 app.use(cors());
 app.use(morgan('combined'));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limite chaque IP à 100 requêtes par windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100
 });
 app.use(limiter);
 
 // Configuration des sessions
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'crazy-mini-200633',
+  secret: process.env.SESSION_SECRET || 'crazy-mini-secret-key',
   resave: false,
   saveUninitialized: false,
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000 // 24 heures
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 // Routes
 app.use('/', require('./routes/auth'));
 app.use('/bot', require('./routes/bot'));
 app.use('/dashboard', require('./routes/dashboard'));
+app.use('/api', require('./routes/api'));
 
 // Route pour servir les pages
 app.get('/', (req, res) => {
@@ -65,9 +55,26 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
 });
 
-// Gestion des erreurs 404
+// Gestion des erreurs 404 - version simplifiée
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+  res.status(404).send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>404 - Crazy-mini</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+        <div class="text-center">
+            <h1 class="text-6xl font-bold text-gray-800 mb-4">404</h1>
+            <p class="text-xl text-gray-600 mb-8">Page non trouvée</p>
+            <a href="/" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                Retour à l'accueil
+            </a>
+        </div>
+    </body>
+    </html>
+  `);
 });
 
 module.exports = app;
