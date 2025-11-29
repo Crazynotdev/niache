@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Crazy-mini</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+        <div class="w-64 bg-white shadow-lg">
+            <div class="p-6 border-b">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-indigo-600 rounded-lg"></div>
+                    <span class="ml-2 text-xl font-bold text-gray-900">Crazy-mini</span>
+                </div>
+            </div>
+            
+            <nav class="mt-6">
+                <a href="#overview" class="sidebar-nav-item active">
+                    <i class="fas fa-chart-bar mr-3"></i>
+                    Vue d'ensemble
+                </a>
+                <a href="#configuration" class="sidebar-nav-item">
+                    <i class="fas fa-cog mr-3"></i>
+                    Configuration
+                </a>
+                <a href="#logs" class="sidebar-nav-item">
+                    <i class="fas fa-terminal mr-3"></i>
+                    Logs
+                </a>
+                <a href="#plugins" class="sidebar-nav-item">
+                    <i class="fas fa-puzzle-piece mr-3"></i>
+                    Plugins
+                </a>
+            </nav>
+            
+            <div class="absolute bottom-0 w-64 p-4 border-t">
+                <button id="logout-btn" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-200">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b">
+                <div class="flex justify-between items-center py-4 px-6">
+                    <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+                    <div class="flex items-center space-x-4">
+                        <div id="connection-status-badge" class="px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                            <i class="fas fa-circle mr-1"></i>
+                            Connexion...
+                        </div>
+                        <div class="text-sm text-gray-600" id="user-phone"></div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Vue d'ensemble -->
+            <section id="overview" class="dashboard-section active">
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <div class="flex items-center">
+                                <div class="p-3 bg-green-100 rounded-lg">
+                                    <i class="fas fa-robot text-green-600 text-xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-2xl font-bold text-gray-900" id="bot-status">En attente</div>
+                                    <div class="text-gray-600">Statut du bot</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <div class="flex items-center">
+                                <div class="p-3 bg-blue-100 rounded-lg">
+                                    <i class="fas fa-message text-blue-600 text-xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-2xl font-bold text-gray-900" id="messages-count">0</div>
+                                    <div class="text-gray-600">Messages traités</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <div class="flex items-center">
+                                <div class="p-3 bg-purple-100 rounded-lg">
+                                    <i class="fas fa-clock text-purple-600 text-xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-2xl font-bold text-gray-900" id="uptime">0h</div>
+                                    <div class="text-gray-600">Temps de connexion</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Logs en temps réel -->
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="p-6 border-b">
+                            <h3 class="text-lg font-semibold text-gray-900">Activité en temps réel</h3>
+                        </div>
+                        <div class="p-6">
+                            <div id="realtime-logs" class="h-64 overflow-y-auto bg-gray-50 rounded-lg p-4 font-mono text-sm">
+                                <div class="text-gray-500">En attente d'activité...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Configuration -->
+            <section id="configuration" class="dashboard-section">
+                <div class="p-6">
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="p-6 border-b">
+                            <h3 class="text-lg font-semibold text-gray-900">Configuration du bot</h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Préfixe des commandes</label>
+                                <input type="text" id="command-prefix" value="!" class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Mode de fonctionnement</label>
+                                <select id="bot-mode" class="w-48 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                                    <option value="public">Public</option>
+                                    <option value="private">Privé</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Image de profil</label>
+                                <input type="file" id="profile-image" class="w-full px-
