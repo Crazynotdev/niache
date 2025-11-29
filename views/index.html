@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crazy-mini - Connectez votre bot WhatsApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-inter">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-indigo-600 rounded-lg"></div>
+                    <span class="ml-2 text-xl font-bold text-gray-900">Crazy-mini</span>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-indigo-600">Fonctionnalités</a>
+                    <a href="#stats" class="text-gray-600 hover:text-indigo-600">Statistiques</a>
+                    <a href="#contact" class="text-gray-600 hover:text-indigo-600">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                    Connectez votre bot
+                    <span class="text-indigo-600">WhatsApp</span>
+                    en 30 secondes
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                    Plateforme SaaS complète pour créer, gérer et personnaliser votre instance CrazyMD bot WhatsApp avec une interface moderne et sécurisée.
+                </p>
+                
+                <!-- Stats en temps réel -->
+                <div id="live-stats" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-2xl mx-auto">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="text-2xl font-bold text-indigo-600" id="bots-count">0</div>
+                        <div class="text-gray-600">Bots connectés</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="text-2xl font-bold text-green-600" id="uptime">100%</div>
+                        <div class="text-gray-600">Uptime serveur</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="text-2xl font-bold text-blue-600" id="availability">100%</div>
+                        <div class="text-gray-600">Disponibilité</div>
+                    </div>
+                </div>
+
+                <!-- Formulaire de connexion -->
+                <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Connectez votre bot</h3>
+                    
+                    <form id="connect-form">
+                        <div class="mb-4">
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                                Numéro WhatsApp
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone"
+                                placeholder="ex: 33612345678"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                required
+                            >
+                        </div>
+                        
+                        <button 
+                            type="submit"
+                            id="connect-btn"
+                            class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-200 font-medium"
+                        >
+                            Générer le code de pairing
+                        </button>
+                    </form>
+
+                    <!-- QR Code et statut -->
+                    <div id="connection-status" class="mt-6 hidden">
+                        <div class="text-center">
+                            <div id="qrcode-container" class="mb-4 hidden">
+                                <div class="text-sm text-gray-600 mb-2">Scannez ce QR Code avec WhatsApp</div>
+                                <div id="qrcode" class="inline-block p-4 bg-white border rounded-lg"></div>
+                            </div>
+                            <div id="pairing-code-container" class="mb-4 hidden">
+                                <div class="text-sm text-gray-600 mb-2">Code de pairing:</div>
+                                <div id="pairing-code" class="text-2xl font-mono font-bold text-indigo-600"></div>
+                            </div>
+                            <div id="status-message" class="text-sm"></div>
+                            <div class="mt-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div id="progress-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Fonctionnalités principales</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🟢</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Connexion Rapide</h3>
+                    <p class="text-gray-600">Connectez votre bot WhatsApp en moins de 30 secondes avec pairing code ou QR Code</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🔐</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Sécurité Avancée</h3>
+                    <p class="text-gray-600">Limite de sécurité, rate limiting et reconnexion automatique</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🖥️</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Dashboard Complet</h3>
+                    <p class="text-gray-600">Interface de gestion complète avec logs en temps réel</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alertes système -->
+    <div id="system-alerts" class="fixed bottom-4 right-4 max-w-sm"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
